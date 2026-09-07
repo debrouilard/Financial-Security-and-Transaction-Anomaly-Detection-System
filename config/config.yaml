@@ -1,0 +1,37 @@
+data:
+  # Path to the IBM AML Large dataset (CSV or Parquet). Prefer Parquet for production.
+  # Example Kaggle files: HI-Large_Trans.csv or LI-Large_Trans.csv
+  raw_path: "data/raw/HI-Large_Trans.csv"   # or "hdfs://.../HI-Large_Trans.parquet"
+  processed_path: "data/processed"
+  feature_path: "data/features"
+  split_path: "data/splits"
+
+  # Expected schema (IBM AML Large)
+  columns:
+    timestamp: "Timestamp"
+    from_bank: "From Bank"
+    from_account: "Account"          # originator (first Account column)
+    to_bank: "To Bank"
+    to_account: "Account.1"          # beneficiary (second Account column) – adjust if renamed
+    amount_received: "Amount Received"
+    receiving_currency: "Receiving Currency"
+    amount_paid: "Amount Paid"
+    payment_currency: "Payment Currency"
+    payment_format: "Payment Format"
+    is_laundering: "Is Laundering"   # label (0/1)
+
+  # Chronological split ratios (by timestamp)
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+
+  # Feature engineering windows (in hours)
+  velocity_windows_hours: [1, 6, 24]
+  behavioral_lookback_days: 7
+
+spark:
+  app_name: "AML-Anomaly-Detection"
+  master: "local[*]"                 # change for cluster
+  shuffle_partitions: 200
+  driver_memory: "8g"
+  executor_memory: "8g"
