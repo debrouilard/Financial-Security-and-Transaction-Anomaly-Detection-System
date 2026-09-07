@@ -1,0 +1,82 @@
+anomaly_models:
+  isolation_forest:
+    n_estimators: 200
+    max_samples: 256
+    contamination: "auto"          # or a float e.g. 0.001
+    max_features: 1.0
+    bootstrap: false
+    n_jobs: -1
+    random_state: 42
+    # Training sample size (rows). Keep all positives + random negatives.
+    train_sample_size: 2_000_000
+    # Feature columns used by the model (must exist after Part 1)
+    feature_cols:
+      - log_amount
+      - hour_sin
+      - hour_cos
+      - dow_sin
+      - dow_cos
+      - is_weekend
+      - is_night
+      - is_cross_currency
+      - is_same_bank
+      - out_cnt_1h
+      - out_sum_1h
+      - out_avg_1h
+      - out_cnt_6h
+      - out_sum_6h
+      - out_cnt_24h
+      - out_sum_24h
+      - in_cnt_1h
+      - in_sum_1h
+      - in_cnt_6h
+      - in_sum_6h
+      - in_cnt_24h
+      - in_sum_24h
+      - unique_counterparties_7d
+      - unique_payment_formats_7d
+      - same_bank_ratio_7d
+
+  lof:
+    n_neighbors: 35
+    algorithm: "auto"
+    leaf_size: 30
+    metric: "minkowski"
+    p: 2
+    contamination: "auto"
+    novelty: true                  # required for scoring unseen data
+    n_jobs: -1
+    # LOF is expensive → much smaller sample
+    train_sample_size: 300_000
+    feature_cols:                  # same list as IF (or a subset)
+      - log_amount
+      - hour_sin
+      - hour_cos
+      - dow_sin
+      - dow_cos
+      - is_weekend
+      - is_night
+      - is_cross_currency
+      - is_same_bank
+      - out_cnt_1h
+      - out_sum_1h
+      - out_avg_1h
+      - out_cnt_6h
+      - out_sum_6h
+      - out_cnt_24h
+      - out_sum_24h
+      - in_cnt_1h
+      - in_sum_1h
+      - in_cnt_6h
+      - in_sum_6h
+      - in_cnt_24h
+      - in_sum_24h
+      - unique_counterparties_7d
+      - unique_payment_formats_7d
+      - same_bank_ratio_7d
+
+artifacts:
+  base_dir: "models"
+  isolation_forest: "models/isolation_forest"
+  lof: "models/lof"
+  scaler: "models/scaler"          # shared StandardScaler fitted on train sample
